@@ -1,3 +1,11 @@
+# Project 01
+All assignments were done in the C++ language for the Operation Systems subject.
+UFRN - 2017.
+
+## Contributors
+Thiago César
+Gustavo Araújo Carvalho
+
 ### Assignment 1.2: Process List
 This program builds a JSON file of the current active processes while also displaying some statistics and a simple tree view in the terminal.
 This is done by reading and parsing the information stored in the /proc folder existent in the Unix-based systems.
