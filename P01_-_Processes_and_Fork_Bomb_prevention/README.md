@@ -3,7 +3,8 @@ All assignments were done in the C++ language for the Operation Systems subject.
 UFRN - 2017.
 
 ## Contributors
-Gustavo Araújo Carvalho\s
+Gustavo Araújo Carvalho
+
 Thiago César de Lucena
 
 ### Assignment 1.1: Form Bomb Prevent
