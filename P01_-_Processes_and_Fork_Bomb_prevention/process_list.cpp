@@ -125,24 +125,28 @@ void parseResults(const std::vector<std::string>& processes, const int& targetPI
 
 	// Terminal tree
 	auto itInitialProcess = process_map.find(targetPID);
-	Process& p = itInitialProcess->second;
+	if (itInitialProcess != process_map.end()) {
+		Process& p = itInitialProcess->second;
 
-	std::cout << p.name << "\n";
-	printTree(child_list, p.pid, 2);
+		std::cout << p.name << "\n";
+		printTree(child_list, p.pid, 2);
 
-	// JSON
-	std::string json = "{\n  \"Name\": \"" + p.name
-		      + "\",\n  \"User\": \"" + p.user
-			  + "\",\n  \"PID\": " + std::to_string(p.pid);
-		
-	std::string tempres = prepareJSON(child_list, p.pid, 4);
-	if (tempres != "")
-		json += ",\n  \"Processos filhos\": [\n"
-		+ tempres + "  \n  ]";
+		// JSON
+		std::string json = "{\n  \"Name\": \"" + p.name
+			      + "\",\n  \"User\": \"" + p.user
+				  + "\",\n  \"PID\": " + std::to_string(p.pid);
+			
+		std::string tempres = prepareJSON(child_list, p.pid, 4);
+		if (tempres != "")
+			json += ",\n  \"Processos filhos\": [\n"
+			+ tempres + "  \n  ]";
 
-	json += "\n}";
+		json += "\n}";
 
-	writeJSON(json);
+		writeJSON(json);
+	} else {
+		std::cout << "O processo especificado não existe\n";
+	}
 }
 
 // Recursively prints the process tree on the terminal
