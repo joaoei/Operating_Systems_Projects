@@ -3,7 +3,7 @@ All assignments were done in the C++ language for the Operation Systems subject.
 UFRN - 2017.
 
 ## Contributors
-Gustavo Araújo Carvalho
+Gustavo Araújo Carvalho\s
 Thiago César de Lucena
 
 ### Assignment 1.1: Form Bomb Prevent
@@ -19,6 +19,8 @@ To compile, just insert the following command in the terminal ([filename] stands
 Running the program can be done simply by running the executable itself, adding the limit _n_ of processes desired:
 
 	./[executable] n
+
+The output will show on the terminal the PID (process id) and PGID (process group ID) of the processes created. When the PGID process is killed, the message is also shown between process information lines.
 
 ### Assignment 1.2: Process List
 This program builds a JSON file of the current active processes while also displaying some statistics and a simple tree view in the terminal.
