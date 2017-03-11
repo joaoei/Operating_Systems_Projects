@@ -3,8 +3,22 @@ All assignments were done in the C++ language for the Operation Systems subject.
 UFRN - 2017.
 
 ## Contributors
-Thiago César
 Gustavo Araújo Carvalho
+Thiago César de Lucena
+
+### Assignment 1.1: Form Bomb Prevent
+This program creates a situation in which a fork bomb is dropped by an infinite loop inside the program 
+itself, and then it tries to stop it when a number _n_ of processes created is reached. This prevents the machine to crash.
+The limit of processes _n_ must be informed by the user. This number is stored in a shared memory area to 
+be acessed by all forked processes. Once the total number of processes reach the limit, the program kills all processes and their group process, which is the process created when the program was fresh executed.
+
+To compile, just insert the following command in the terminal ([filename] stands for the name you want to give to the executable):
+
+	g++ -std=c++11 fork_bomb_final.cpp -o [filename]
+
+Running the program can be done simply by running the executable itself, adding the limit _n_ of processes desired:
+
+	./[executable] n
 
 ### Assignment 1.2: Process List
 This program builds a JSON file of the current active processes while also displaying some statistics and a simple tree view in the terminal.
