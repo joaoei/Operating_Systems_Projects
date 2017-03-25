@@ -1,4 +1,4 @@
-# Project 01
+# Project 02
 All assignments were done in the C++ language for the Operational Systems subject.
 UFRN - 2017.
 
