@@ -15,6 +15,7 @@
 
 #include "gpio.hpp"
 
+// struct that stores relevant Process info.
 struct Process {
 	Process(const unsigned int &_pid, const float &_cpuPerc) {
 		pid = _pid;
@@ -25,16 +26,20 @@ struct Process {
 	float cpuUsagePercent;
 };
 
+// Functor used in the priority_queue.
 struct ProcessCompare {
 	inline bool operator()(const Process &a, const Process &b) {
 		return a.cpuUsagePercent < b.cpuUsagePercent;
 	}
 };
 
+// Verifies se a word is a number.
 bool isdigit(const std::string& str) {
 	return (str.front() >= '0' and str.front() <= '9');
 }
 
+// Reads a directory searching for any file that starts with a number
+// in this case, returns all the processes from the /proc folder.
 std::vector<unsigned int> readDirectoryForProcesses(const std::string& path = std::string()) {
 	std::vector<unsigned int> result;
 	dirent* de;
@@ -58,44 +63,52 @@ std::vector<unsigned int> readDirectoryForProcesses(const std::string& path = st
 }
 
 int main(int argc, char const *argv[]) {
+	// Data files
 	std::vector<unsigned int> results;
 	std::unordered_map<unsigned int, unsigned int> timetable; // <PID, totaltime>
 	std::priority_queue<Process, std::vector<Process>, ProcessCompare> processRanking;
 	unsigned int curr_cpujiffies, old_cpujiffies = 0, processDelta, totalProcessDelta, cpuDelta;
 
+	// Beaglebone controllers
 	bbb::GPIO led_G(51);
 	bbb::GPIO led_Y(50);
 	bbb::GPIO led_R(60);
 	bbb::GPIO button(115);
 
+	// Setting direction of the beaglebone components
 	led_G.setModeOut();
 	led_Y.setModeOut();
 	led_R.setModeOut();
 	button.setModeIn();
 
-
 	while (true) {
+		// Reads /proc/stat for cpu info
 		std::ifstream cpustatfile("/proc/stat");
 		char cpustatchar[1000];
 		cpustatfile.getline(cpustatchar, 1000);
 		std::stringstream cpustat(cpustatchar+3);
 
+		// Calculates cpu use
 		unsigned int temp;
 		curr_cpujiffies = 0;
 		while (cpustat >> temp)
 			curr_cpujiffies += temp;
 
+		// Calculates the cpu usage variation
 		cpuDelta = (curr_cpujiffies - old_cpujiffies);
 		old_cpujiffies = curr_cpujiffies;
 		totalProcessDelta = 0;
 		
+		// reads all processes and loops for their usage
 		results = readDirectoryForProcesses("/proc");
 		for (auto &proc : results) {
+			// try to open the /stat file for each of them
 			std::string filename("/proc/" + std::to_string(proc) + "/stat");
 			std::ifstream fs(filename);
 			if (!fs.is_open()) continue;
 			std::string read;
 
+			// reads the 14th and 15th info stored on them (usertime and kerneltime on cpu)
 			for (int i = 0; i < 13; ++i)
 				fs >> read;
 
@@ -105,6 +118,8 @@ int main(int argc, char const *argv[]) {
 				totaltime += std::stoi(read);
 			}
 
+			// stores process if first time read, otherwise calculates cpu usage variation
+			// and percentage.
 			auto it = timetable.find(proc);
 			if (it == timetable.end()) {
 				timetable.insert({proc, totaltime});
@@ -120,9 +135,11 @@ int main(int argc, char const *argv[]) {
 			}
 		}
 
+		// calculates total cpu usage
 		float totalCPUuse = 100 * (float)totalProcessDelta/cpuDelta;
 		std::cout << "TOTAL CPU USE: " << totalCPUuse << "%\n";
 
+		// lights leds according to cpu usage
 		if (totalCPUuse > 75) {
 			int i;
 			for(i = 0; i < 5 and !button.getValue(); i++) {
@@ -135,7 +152,8 @@ int main(int argc, char const *argv[]) {
 				led_R.setValueOn();
 				std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			}
-			// emergency stop
+			
+			// emergency stop (button pressed)
 			if (i != 5) {
 				led_G.setValueOff();
 				led_Y.setValueOff();
@@ -159,13 +177,6 @@ int main(int argc, char const *argv[]) {
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		}
-
-		// debug
-		// for (int i = 0; i < 5 and !processRanking.empty(); ++i) {
-		// 	Process p = processRanking.top();
-		// 	std::cout << "PID: " << p.pid << " / CPU use: " << p.cpuUsagePercent << "\n";
-		// 	processRanking.pop();
-		// }
 
 		while (!processRanking.empty()) {
 			processRanking.pop();
