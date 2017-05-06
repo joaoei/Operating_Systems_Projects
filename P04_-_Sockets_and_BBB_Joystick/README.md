@@ -18,8 +18,8 @@ The electronic components used for specific functionalities on the joystick were
 * LDR, used to change option on starting screen and to exit game while playing.
 
 #### Sockets communication
-Each component has its own thread and mutex, having no priority scheme due to the game mechanics. When a component's thread is acessing his critical region, the other components' critical region keep blocked until the access is finished. Once the access is finished, the other threads come back to execute normally until another mutex occurs.
+Each component has its own thread and mutex, having no priority scheme due to the game mechanics. Furthermore, the socket thread shares access to each component's mutex. When a component's thread is acessing its critical region, the socket communication is blocked or vice versa, this means, either the read values are being updated, or they are being sent through the socket. Once the access is finished, the mutex(es) is/are released and any blocked thread that shares it/them continues to execute normally.
 
-The communication uses UDP protocol. The game is executed as a server on the user's machine and the joystick code is executed as a client on BeagleBone Black.
+The communication uses UDP protocol. The game is executed as a server on the user's machine and the joystick code is executed as a client on the BeagleBone Black.
 
 For more information about the game, BeagleBone configuration, and access to the source codes, check the forked repository: https://github.com/GustavoAC/PyGalaxian.
