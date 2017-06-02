@@ -32,4 +32,4 @@ Running the program can be done simply by running the executable itself along wi
 
 [processes amount] The amount of processes to be displayed. May be empty. If set, must be after [sort option].
   
-For proper visualisation, run it with the terminal window maximized. To stop the execution, press Ctrl+C.
+For proper visualisation, run monitor with the terminal window maximized. To stop the execution, press Ctrl+C.
