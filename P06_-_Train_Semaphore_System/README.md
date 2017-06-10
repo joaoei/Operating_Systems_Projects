@@ -10,9 +10,22 @@ Thiago César de Lucena
 ## Assignment 6:
 This project is intended to implement a solution for the synchronization of urban trains using semaphores. Qt Creator IDE is used to model the rail network and run it as a server, and a Beaglebone Black is used as a terminal-based train controller to be runned as a client. The rail network server and train controller client communicate through sockets. 
 
-The rail network and points of possible collision between trains (which is where the semaphores are put) are simulated according to the image below:
+### Rail Network server
+The rail network server uses semaphores implementations to guarantee the access of only one train on critical zones, which are the paths on the trip of possible collision between trains. The rail network is simulated according to the image below.
 
 ![rail network](https://github.com/thiagocesarm/Operating_Systems_Projects/blob/master/P06_-_Train_Semaphore_System/images/trains.png)
+
+The complete trip of each train is stated as follows:
+
+* Train 1 -  zone
+* Train 2 -  zone
+* Train 3 -  zone
+* Train 4 -  zone
+* Train 5 -  zone
+* Train 6 -  zone
+* Train 7 -  zone
+
+The semaphores (critical zones) are stated as follows:
 
 * Semaphore 0 - Between pink and light blue zones.
 * Semaphore 1 - Between light blue and green zones.
@@ -24,6 +37,11 @@ The rail network and points of possible collision between trains (which is where
 * Semaphore 7 - Between pink and orange zones.
 * Semaphore 8 - Between orange and purple zones.
 * Semaphore 9 - Between purple and blue zones.
+
+Each train has its own speed, which can be modified by the train controller client. Also, some information about each of the trains' trips are showed on screen: time of last trip, average time of last ten trips, and standard deviation.
+
+###Train Controller client
+The Beaglebone Black is used to run the train controller client. Via terminal-based menus, the user can connect to the server and pause/resume all train trips, pause/resume a single train trip and change the speed of a specific train.
 
 ### BeagleBone Black configuration:
 To use the train controller the way it was intended to be on this project, some electronic pieces will 
@@ -42,7 +60,7 @@ First thing to do is to turn on and connect the Beaglebone Black on your machine
 
 **Compiling and running the server**
 
-Simply open the '\Qt Server' project on Qt Creator and run it.
+Simply open the `\Qt Server` project on Qt Creator and run it.
 
 **Compiling and running the train controller client**
 
