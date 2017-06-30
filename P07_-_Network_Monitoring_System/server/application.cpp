@@ -96,7 +96,7 @@ int Application::showListConnected() {
 	while (!isDone) {
 		std::cout << "Choose an id or press Q to return:\n";
 		
-		std::cout << " ID | %CPU | TotalMEM | Session Time (seconds)\n";
+		std::cout << " ID | %CPU | %MEM | Session Time (seconds)\n";
 		connectionMutex.lock();
 		time_t currentTime = time(NULL);
 		std::cout << std::setprecision(2) << std::fixed;
@@ -110,7 +110,7 @@ int Application::showListConnected() {
 			std::cout << std::left << con.packet.totalCPUuse;
 
 			std::cout << " ";
-			std::cout.width(10);
+			std::cout.width(6);
 			std::cout << std::left << con.packet.totalMEMuse;
 
 			std::cout << " ";
