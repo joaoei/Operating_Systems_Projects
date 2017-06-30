@@ -10,6 +10,9 @@
 #include <unordered_map>
 #include "structs.hpp"
 
+#define PORTNUM 11112
+#define IP "127.0.0.1"
+
 class SocketManager {
 public:
     SocketManager(std::list<ConnectionInfo> &_connected,

@@ -15,9 +15,6 @@
 #include <mutex>
 #include <chrono>
 
-#define PORTNUM 11112
-#define IP "127.0.0.1"
-
 extern std::mutex connectionMutex;
 extern std::mutex blacklistMutex;
 
@@ -72,7 +69,7 @@ SocketManager::~SocketManager() {
     
     // write history to file
     if (!history.empty()) {
-        std::cout << "Salvando history...\n";
+        std::cout << "Saving history...\n";
         std::ofstream historyfile("server_history.txt");
         if(historyfile.is_open()) {
             for(auto elem : this->history){
@@ -86,7 +83,7 @@ SocketManager::~SocketManager() {
 
     // write blacklist to file
     if (!blacklist.empty()) {
-        std::cout << "Salvando blacklist...\n";
+        std::cout << "Saving blacklist...\n";
         std::ofstream blacklistfile("server_blacklist.txt");
         if(blacklistfile.is_open()){
             for (auto item : this->blacklist) {
@@ -136,20 +133,20 @@ void SocketManager::waitConnections() {
     //Verificar erros
     if (socketId == -1)
     {
-        std::cout << "Falha ao executar socket()\n";
+        std::cout << "Failed in executing socket()\n";
         exit(EXIT_FAILURE);
     }
 
     //Conectando o socket a uma porta. Executado apenas no lado servidor
     if ( bind (socketId, (struct sockaddr *)&endereco, sizeof(struct sockaddr)) == -1 )
     {
-        std::cout << "Falha ao executar bind()\n";
+        std::cout << "Failed in executing bind()\n";
         exit(EXIT_FAILURE);
     }
 
     //Habilitando o servidor a receber conexoes do cliente
     if ( listen( socketId, 10 ) == -1) {
-        std::cout << "Falha ao executar listen()\n";
+        std::cout << "Failed in executing listen()\n";
         exit(EXIT_FAILURE);
     }
 
@@ -159,7 +156,7 @@ void SocketManager::waitConnections() {
         conexaoClienteId = accept(socketId, (struct sockaddr *) &sender, &sendersize);
 
         if (conexaoClienteId == -1) {
-            printf("Falha ao executar accept()");
+            printf("Failed in executing accept()");
             exit(EXIT_FAILURE);
         }
 
@@ -281,7 +278,7 @@ void SocketManager::monitorConnection(const int conexaoClienteId, const int conn
         }
 
         connectionMutex.lock();
-        // atualizar pacote em connected
+        // update package connected
         itConnected->packet = pacoteRecebido;
         connectionMutex.unlock();
     }
@@ -289,10 +286,10 @@ void SocketManager::monitorConnection(const int conexaoClienteId, const int conn
     connectionMutex.lock();
     // update history
     history.find(connId)->second.totalConnTime += time(NULL) - itConnected->connectedSince;
-    // delete pacode de info de connected
+    // delete packet of connected info
     itConnected->isAlive = false;
     connected.erase(itConnected);
-    // delete thread de connectionThreads
+    // delete thread of connectionThreads
     itConnThreads->detach();
     connectionThreads.erase(itConnThreads);
     killSchedule.erase(connId);

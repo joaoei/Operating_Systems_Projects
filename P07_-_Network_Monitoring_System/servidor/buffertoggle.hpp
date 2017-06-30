@@ -1,5 +1,10 @@
+/* BufferToggle.hpp
+ * @Author
+ *    Luc Lieber
+ *
+ *    A simple class to toggle buffered input
+ */
 #include <termios.h>
-// #include <stdio.h>
 #include <unistd.h>
 
 class BufferToggle
@@ -32,13 +37,3 @@ class BufferToggle
             tcsetattr(STDIN_FILENO, TCSANOW, &t); //Apply the new settings
         }
 };
-
-// int main() {
-//     BufferToggle bt;
-//     bt.off();
-//     char c;
-//     while (true) {
-//         c = getchar();
-//         printf("%c", c+3);
-//     }
-// }

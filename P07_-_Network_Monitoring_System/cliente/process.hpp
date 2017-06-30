@@ -15,7 +15,6 @@ struct Process {
 	    cpuUsagePercent = pro.cpuUsagePercent;
 	    memV = pro.memV;
 	    memRSS = pro.memRSS;
-	    // std::copy(pro.name, pro.name + 100, name);
 	    strcpy(name, pro.name);
 	}
 };

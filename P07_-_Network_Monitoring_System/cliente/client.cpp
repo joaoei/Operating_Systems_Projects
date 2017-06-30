@@ -1,4 +1,3 @@
-// Depois ver o que não estiver usando para apagar
 #include <cstdlib>
 #include <algorithm>
 

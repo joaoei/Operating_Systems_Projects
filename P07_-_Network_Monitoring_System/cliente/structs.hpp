@@ -3,18 +3,6 @@
 #include <ctime>
 #include <cstring>
 
-/*
-Info da conexão:
-pacote mais recente
-ip do usuario
-id do usuario
-tempo de inicio da conexao
-*/
-
-/*
-Informações do pacote:
-coisas dos processos
-*/
 struct Process {
 	unsigned int pid;
 	float cpuUsagePercent = 0;
@@ -28,7 +16,6 @@ struct Process {
 	    cpuUsagePercent = pro.cpuUsagePercent;
 	    memV = pro.memV;
 	    memRSS = pro.memRSS;
-	    // std::copy(pro.name, pro.name + 100, name);
 	    strcpy(name, pro.name);
 	}
 };
@@ -53,7 +40,6 @@ struct Packet {
 
 	Packet() {}
 	
-	// it works on real machines
 	float totalCPUuse;
 	float totalMEMuse;
 	Process topProcesses[25];

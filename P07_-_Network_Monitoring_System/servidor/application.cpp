@@ -55,11 +55,9 @@ void Application::getInput(std::string &str, bool &isDone) {
     while (c != '\n') {
     	if ((int) c == 127 and !str.empty()) str.pop_back();
     	else str.push_back(c);
-//    	std::cout << "\n\n " << (int) c << "\n";
         c = getchar();
     }
 
-    // std::cout << str << "\n";
     isDone = true;
 }
 
@@ -101,12 +99,25 @@ int Application::showListConnected() {
 		std::cout << " ID | %CPU | TotalMEM | Session Time (seconds)\n";
 		connectionMutex.lock();
 		time_t currentTime = time(NULL);
+		std::cout << std::setprecision(2) << std::fixed;
 		for (auto &con : connected) {
-			std::cout /*<< std::left << " " << std::setprecision(2) << std::fixed*/
-					  /*<< std::cout.width(3)*/ << con.id << "   "
-					  /*<< std::cout.width(6)*/ << con.packet.totalCPUuse << "  "
-					  /*<< std::cout.width(10)*/ << con.packet.totalMEMuse << "  "
-					  << currentTime - con.connectedSince << "\n";
+			std::cout << " ";
+			std::cout.width(4);
+			std::cout << std::left << con.id;
+
+			std::cout << " ";
+			std::cout.width(6);
+			std::cout << std::left << con.packet.totalCPUuse;
+
+			std::cout << " ";
+			std::cout.width(10);
+			std::cout << std::left << con.packet.totalMEMuse;
+
+			std::cout << " ";
+			std::cout.width(24);
+			std::cout << std::left << currentTime - con.connectedSince;
+
+			std::cout << "\n";
 		}
 		connectionMutex.unlock();
 
@@ -154,12 +165,29 @@ void Application::showConnectedProcesses(const int id) {
 		
 		Packet &pack = itConn->packet;
 		std::cout << " PID |   Process Name   | %CPU | memV | memRSS\n";
+		std::cout << std::setprecision(2) << std::fixed;
 		for (int i = 0; i < 25; ++i) {
-			std::cout << " " << pack.topProcesses[i].pid << " "
-					  << std::string(pack.topProcesses[i].name) << "           "
-					  << pack.topProcesses[i].cpuUsagePercent << "    "
-					  << pack.topProcesses[i].memV << "    "
-					  << pack.topProcesses[i].memRSS << "\n";
+			std::cout << " ";
+			std::cout.width(5);
+			std::cout << std::left << pack.topProcesses[i].pid;
+
+			std::cout << " ";
+			std::cout.width(18);
+			std::cout << std::left << std::string(pack.topProcesses[i].name);
+
+			std::cout << " ";
+			std::cout.width(6);
+			std::cout << std::left << pack.topProcesses[i].cpuUsagePercent;
+
+			std::cout << " ";
+			std::cout.width(6);
+			std::cout << std::left << pack.topProcesses[i].memV;
+
+			std::cout << " ";
+			std::cout.width(6);
+			std::cout << std::left << pack.topProcesses[i].memRSS;
+
+			std::cout << "\n";
 		}
 		connectionMutex.unlock();
 
@@ -186,8 +214,21 @@ void Application::showConnectedProcesses(const int id) {
 void Application::showConnectedHistory() {
 	std::cout << "Press Q to return:\n";
 	std::cout << " ID | No of Sessions | Total Past Sessions Time\n";
+	std::cout << std::setprecision(2) << std::fixed;
 	for (auto &val : history) {
-		std::cout << " " << val.second.id << "  " << val.second.numberTimesConnected << "        " << val.second.totalConnTime << "\n";
+		std::cout << " ";
+		std::cout.width(4);
+		std::cout << std::left << val.second.id;
+
+		std::cout << " ";
+		std::cout.width(16);
+		std::cout << std::left << val.second.numberTimesConnected;
+
+		std::cout << " ";
+		std::cout.width(24);
+		std::cout << std::left << val.second.totalConnTime;
+
+		std::cout << "\n";
 	}
 
 	std::cout << "\n> ";
@@ -204,8 +245,18 @@ void Application::showBlacklist() {
 	int i = 0;
 	std::cout << " Index | Process name\n";
 	blacklistMutex.lock();
-	for (auto &str : blacklist)
-		std::cout << " " << i++ << "   " << str << "\n";
+	std::cout << std::setprecision(2) << std::fixed;
+	for (auto &str : blacklist){
+		std::cout << " ";
+		std::cout.width(7);
+		std::cout << std::left << i++;
+
+		std::cout << " ";
+		std::cout.width(12);
+		std::cout << std::left << str;
+
+		std::cout << "\n";	
+	}
 
 	blacklistMutex.unlock();
 
