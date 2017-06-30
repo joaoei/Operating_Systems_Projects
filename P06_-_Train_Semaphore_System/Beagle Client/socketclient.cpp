@@ -45,18 +45,3 @@ void SocketClient::sendPacket(const Packet &pack) {
         exit(EXIT_FAILURE);
     }
 }
-
-// int main(int argc, char const *argv[]) {
-//     SocketClient *cuck;
-//     if (cuck == nullptr) printf("Fuck you\n");
-//     cuck = new SocketClient();
-//     if (cuck != nullptr) printf("Kill yourself\n");
-
-//     while (true) {
-//         cuck->sendPacket(Packet(1, -1, 0));
-
-//         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-//     }
-
-//     return 0;
-// }
